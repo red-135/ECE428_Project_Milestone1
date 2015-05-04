@@ -36,7 +36,7 @@ architecture Behavioral of Ram_out_1 is
 		begin
 			if rising_edge(pclk) then
 				if (reset = '1') then 
-					data <= 0 ;
+					data <= 1 ;
 				else
 					data <= data + 1 ;
 				end if ;
