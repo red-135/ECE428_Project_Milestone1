@@ -47,7 +47,8 @@ ARCHITECTURE behavior OF Top_module_tb IS
          cap_pixel_out : OUT  std_logic_vector(4 downto 0);
          ref_pixel_out : OUT  std_logic_vector(4 downto 0);
          abs_value_out : OUT  std_logic_vector(4 downto 0);
-			accum_total : OUT std_logic_vector(22 downto 0)
+			accum_total : OUT std_logic_vector(22 downto 0);
+			threshold : OUT std_logic_vector(2 downto 0)
         );
     END COMPONENT;
     
@@ -62,6 +63,7 @@ ARCHITECTURE behavior OF Top_module_tb IS
    signal ref_pixel_out : std_logic_vector(4 downto 0);
    signal abs_value_out : std_logic_vector(4 downto 0);
 	signal accum_total : std_logic_vector(22 downto 0);
+	signal threshold : std_logic_vector(2 downto 0);
 
    -- Clock period definitions
    constant clk_period : time := 10 ns;
@@ -76,7 +78,8 @@ BEGIN
           cap_pixel_out => cap_pixel_out,
           ref_pixel_out => ref_pixel_out,
           abs_value_out => abs_value_out,
-			 accum_total => accum_total
+			 accum_total => accum_total,
+			 threshold => threshold
         );
 
    -- Clock process definitions

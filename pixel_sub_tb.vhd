@@ -48,7 +48,8 @@ ARCHITECTURE behavior OF pixel_sub_tb IS
          cap_pixel : IN  std_logic_vector(4 downto 0);
          ref_pixel : IN  std_logic_vector(4 downto 0);
          abs_value_out : OUT  std_logic_vector(4 downto 0);
-         accum_total : OUT  std_logic_vector(22 downto 0)
+         accum_total : OUT  std_logic_vector(22 downto 0);
+			threshold : OUT std_logic_vector(2 downto 0)
         );
     END COMPONENT;
     
@@ -64,6 +65,7 @@ ARCHITECTURE behavior OF pixel_sub_tb IS
  	--Outputs
    signal abs_value_out : std_logic_vector(4 downto 0);
    signal accum_total : std_logic_vector(22 downto 0);
+	signal threshold : std_logic_vector(2 downto 0);
 
    -- Clock period definitions
    constant clk_period : time := 10 ns;
@@ -79,7 +81,8 @@ BEGIN
           cap_pixel => cap_pixel,
           ref_pixel => ref_pixel,
           abs_value_out => abs_value_out,
-          accum_total => accum_total
+          accum_total => accum_total,
+			 threshold => threshold
         );
 
    -- Clock process definitions

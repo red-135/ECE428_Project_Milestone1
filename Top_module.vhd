@@ -14,7 +14,8 @@ entity Top_module is
 		cap_pixel_out : out std_logic_vector(4 downto 0);
 		ref_pixel_out : out std_logic_vector(4 downto 0);
 		abs_value_out : out std_logic_vector(4 downto 0);
-		accum_total : out std_logic_vector(22 downto 0)
+		accum_total : out std_logic_vector(22 downto 0);
+		threshold : out std_logic_vector(2 downto 0)
 	);
 end Top_module;
 
@@ -34,6 +35,7 @@ begin
 		fin_addr => fin_addr,
 		cap_pixel => cap_pixel,
 		ref_pixel => ref_pixel,
+		threshold => threshold,
 		abs_value_out => abs_value_out,
 		accum_total => accum_total
 	);
