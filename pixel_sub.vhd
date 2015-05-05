@@ -44,7 +44,11 @@ architecture Behavioral of pixel_sub is
 	
 	signal cap_minus_ref : std_logic_vector(5 downto 0);
 	signal ref_minus_cap : std_logic_vector(5 downto 0);
+	
+	signal en_delay1, en_delay2 : std_logic;
+	signal one : std_logic;
 begin
+	one <= '1';
 	
 	process_reset: process(clk)
 	begin
@@ -63,20 +67,37 @@ begin
 				
 				abs_value_stage3 <= (others => '0');
 				abs_value_stage4 <= (others => '0');
+				
+				en_delay1 <= '0';
+				en_delay2 <= '0';
 			else
-				fin_addr_stage1 <= fin_addr;
-				fin_addr_stage2 <= fin_addr_stage1;
-				fin_addr_stage3 <= fin_addr_stage2;
+				if (en = '1') then
+				--if (one = '1') then
+					cap_pixel_stage1 <= cap_pixel;
+					ref_pixel_stage1 <= ref_pixel;
+					
+					fin_addr_stage1 <= fin_addr;
+				end if;
 				
-				cap_pixel_stage1 <= cap_pixel;
-				ref_pixel_stage1 <= ref_pixel;
-			
-				abs_value <= abs_value_temp;
-				accumulator <= accumulator_temp;
+				if (en_delay1 = '1') then
+				--if (one = '1') then
+					abs_value <= abs_value_temp;
+					fin_addr_stage2 <= fin_addr_stage1;
+				
+				end if;
+				
+				if (en_delay2 = '1') then
+				--if (one = '1') then
+					abs_value_stage3 <= abs_value;
+					fin_addr_stage3 <= fin_addr_stage2;
+					accumulator <= accumulator_temp;
+				end if;
+				
 				total <= total_temp;
-				
-				abs_value_stage3 <= abs_value;
 				abs_value_stage4 <= abs_value_stage3;
+				
+				en_delay1 <= en;
+				en_delay2 <= en_delay1;
 			end if;
 		end if;
 	end process;
@@ -96,7 +117,13 @@ begin
 	process_stage2: process(abs_value, accumulator, fin_addr_stage3)
 	begin
 		if(fin_addr_stage3 = '1') then
-			accumulator_temp <= (others => '0');
+			--accumulator_temp <= (others => '0');
+			if(en_delay2 = '1') then
+				accumulator_temp(4 downto 0) <= abs_value;
+				accumulator_temp(22 downto 5) <= (others => '0');
+			else
+				accumulator_temp <= (others => '0');
+			end if;
 		else
 			accumulator_temp <= std_logic_vector(unsigned(accumulator) + unsigned(abs_value));
 		end if;

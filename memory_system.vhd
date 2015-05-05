@@ -52,16 +52,20 @@ architecture Behavioral of memory_system is
 	end component;
 ------------------------------------------------------------------------
 
+	signal carcas : std_logic;
 begin
 
-	video_en <= Vde;
+	video_en <= Vde xor carcas;
 
 	addr_comparator: process(addr_1b)
 		begin
-		if(addr_1b = std_logic_vector(to_unsigned(153599, addr_1b'length))) then
+		-- if(addr_1b = std_logic_vector(to_unsigned(153599, addr_1b'length))) then
+		if(addr_1b = std_logic_vector(to_unsigned(31, addr_1b'length))) then
 			fin_addr <= '1';
+			carcas <= '1';
 		else
 			fin_addr <= '0';
+			carcas <= '0';
 		end if;
 	end process;
 
