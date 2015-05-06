@@ -25,6 +25,8 @@ architecture Behavioral of pixel_sub is
 	signal fin_addr_stage1 : std_logic;	
 	signal fin_addr_stage2 : std_logic;
 	signal fin_addr_stage3 : std_logic;
+	signal fin_addr_stage4_temp : std_logic;
+	signal fin_addr_stage4 : std_logic;
 	
 	signal cap_pixel_stage1 : std_logic_vector(4 downto 0);
 	signal cap_pixel_stage2 : std_logic_vector(4 downto 0);
@@ -61,13 +63,12 @@ architecture Behavioral of pixel_sub is
 begin
 	
 	en_passthru <= en_stage3;
+	fin_addr_passthru <= fin_addr_stage4;
 	cap_pixel_passthru <= cap_pixel_stage3;
 	ref_pixel_passthru <= ref_pixel_stage3;
 	dif_pixel <= dif_pixel_stage3;
 	threshold <= threshold_stage4;
 	total <= total_stage4;
-
-	fin_addr_passthru <= 'Z';
 	
 	process_synch: process(clk)
 	begin
@@ -76,6 +77,7 @@ begin
 				fin_addr_stage1 <= '0';
 				fin_addr_stage2 <= '0';
 				fin_addr_stage3 <= '0';
+				fin_addr_stage4 <= '0';
 				
 				cap_pixel_stage1 <= (others => '0');
 				cap_pixel_stage2 <= (others => '0');
@@ -118,6 +120,7 @@ begin
 					fin_addr_stage3 <= fin_addr_stage2;
 				end if;
 				
+				fin_addr_stage4 <= fin_addr_stage4_temp;
 				dif_pixel_stage4 <= dif_pixel_stage3;
 				total_stage4 <= total_stage4_temp;
 				threshold_stage4 <= threshold_stage4_temp;
@@ -179,9 +182,11 @@ begin
 		if(fin_addr_stage3 = '1') then
 			total_stage4_temp <= accumulator_stage3;
 			threshold_stage4_temp <= threshold_stage4_new;
+			fin_addr_stage4_temp <= en_stage3;
 		else
 			total_stage4_temp <= total_stage4;
 			threshold_stage4_temp <= threshold_stage4;
+			fin_addr_stage4_temp <= '0';
 		end if;
 	end process;
 	
