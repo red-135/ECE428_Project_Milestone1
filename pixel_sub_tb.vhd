@@ -41,16 +41,20 @@ ARCHITECTURE behavior OF pixel_sub_tb IS
  
     COMPONENT pixel_sub
     PORT(
-         clk : IN  std_logic;
-         rst : IN  std_logic;
-         en : IN  std_logic;
-         fin_addr : IN  std_logic;
-         cap_pixel : IN  std_logic_vector(4 downto 0);
-         ref_pixel : IN  std_logic_vector(4 downto 0);
-			en_passthru : OUT std_logic;
-         abs_value_out : OUT  std_logic_vector(4 downto 0);
-         accum_total : OUT  std_logic_vector(22 downto 0);
-			threshold : OUT std_logic_vector(2 downto 0)
+		clk : in std_logic;
+		rst : in std_logic;
+		en : in std_logic;
+		fin_addr : in std_logic;
+		cap_pixel : in std_logic_vector(4 downto 0);
+		ref_pixel : in std_logic_vector(4 downto 0);
+		
+		en_passthru : out std_logic;
+		fin_addr_passthru : out std_logic;
+		cap_pixel_passthru : out std_logic_vector(4 downto 0);
+		ref_pixel_passthru : out std_logic_vector(4 downto 0);
+		dif_pixel : out std_logic_vector(4 downto 0);
+		threshold : out std_logic_vector(2 downto 0);
+		total : out std_logic_vector(22 downto 0)
         );
     END COMPONENT;
     
@@ -65,9 +69,13 @@ ARCHITECTURE behavior OF pixel_sub_tb IS
 
  	--Outputs
 	signal en_passthru : std_logic;
-   signal abs_value_out : std_logic_vector(4 downto 0);
-   signal accum_total : std_logic_vector(22 downto 0);
-	signal threshold : std_logic_vector(2 downto 0);
+	signal fin_addr_passthru : std_logic;
+	signal cap_pixel_passthru : std_logic_vector(4 downto 0);
+	signal ref_pixel_passthru : std_logic_vector(4 downto 0);
+   signal dif_pixel : std_logic_vector(4 downto 0);
+   signal threshold : std_logic_vector(2 downto 0);
+   signal total : std_logic_vector(22 downto 0);
+	
 
    -- Clock period definitions
    constant clk_period : time := 10 ns;
@@ -83,9 +91,12 @@ BEGIN
           cap_pixel => cap_pixel,
           ref_pixel => ref_pixel,
 			 en_passthru => en_passthru,
-          abs_value_out => abs_value_out,
-          accum_total => accum_total,
-			 threshold => threshold
+			 fin_addr_passthru => fin_addr_passthru,
+			 cap_pixel_passthru => cap_pixel_passthru,
+			 ref_pixel_passthru => ref_pixel_passthru,
+          dif_pixel => dif_pixel,
+		  threshold => threshold,
+          total => total
         );
 
    -- Clock process definitions

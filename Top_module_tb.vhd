@@ -43,12 +43,13 @@ ARCHITECTURE behavior OF Top_module_tb IS
     PORT(
          clk : IN  std_logic;
          rst : IN  std_logic;
+		 en_out : OUT std_logic;
          fin_addr_out : OUT  std_logic;
          cap_pixel_out : OUT  std_logic_vector(4 downto 0);
          ref_pixel_out : OUT  std_logic_vector(4 downto 0);
-         abs_value_out : OUT  std_logic_vector(4 downto 0);
-			accum_total : OUT std_logic_vector(22 downto 0);
-			threshold : OUT std_logic_vector(2 downto 0)
+         dif_pixel_out : OUT  std_logic_vector(4 downto 0);
+			total_out : OUT std_logic_vector(22 downto 0);
+			threshold_out : OUT std_logic_vector(2 downto 0)
         );
     END COMPONENT;
     
@@ -58,12 +59,13 @@ ARCHITECTURE behavior OF Top_module_tb IS
    signal rst : std_logic := '1';
 
  	--Outputs
+	signal en_out : std_logic;
    signal fin_addr_out : std_logic;
    signal cap_pixel_out : std_logic_vector(4 downto 0);
    signal ref_pixel_out : std_logic_vector(4 downto 0);
-   signal abs_value_out : std_logic_vector(4 downto 0);
-	signal accum_total : std_logic_vector(22 downto 0);
-	signal threshold : std_logic_vector(2 downto 0);
+   signal dif_pixel_out : std_logic_vector(4 downto 0);
+	signal total_out : std_logic_vector(22 downto 0);
+	signal threshold_out : std_logic_vector(2 downto 0);
 
    -- Clock period definitions
    constant clk_period : time := 10 ns;
@@ -74,12 +76,13 @@ BEGIN
    uut: Top_module PORT MAP (
           clk => clk,
           rst => rst,
+		  en_out => en_out,
           fin_addr_out => fin_addr_out,
           cap_pixel_out => cap_pixel_out,
           ref_pixel_out => ref_pixel_out,
-          abs_value_out => abs_value_out,
-			 accum_total => accum_total,
-			 threshold => threshold
+          dif_pixel_out => dif_pixel_out,
+			 total_out => total_out,
+			 threshold_out => threshold_out
         );
 
    -- Clock process definitions

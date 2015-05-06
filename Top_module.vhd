@@ -10,12 +10,13 @@ entity Top_module is
 		clk : in std_logic ;
 		rst : in std_logic ;
 		
+		en_out : out std_logic;
 		fin_addr_out : out std_logic;
 		cap_pixel_out : out std_logic_vector(4 downto 0);
 		ref_pixel_out : out std_logic_vector(4 downto 0);
-		abs_value_out : out std_logic_vector(4 downto 0);
-		accum_total : out std_logic_vector(22 downto 0);
-		threshold : out std_logic_vector(2 downto 0)
+		dif_pixel_out : out std_logic_vector(4 downto 0);
+		total_out : out std_logic_vector(22 downto 0);
+		threshold_out : out std_logic_vector(2 downto 0)
 	);
 end Top_module;
 
@@ -35,53 +36,13 @@ begin
 		fin_addr => fin_addr,
 		cap_pixel => cap_pixel,
 		ref_pixel => ref_pixel,
-		threshold => threshold,
-		abs_value_out => abs_value_out,
-		accum_total => accum_total
-	);
-	
-	DL_cap : Entity work.variable_delay
-	generic map
-	(
-		line_width => 5,
-		line_length => 4
-	)
-	port map
-	(
-		clk => clk,
-		ena => '1',
-		rst => rst,
-		input => cap_pixel,
-		output => cap_pixel_out
-	);
-	
-	DL_ref : Entity work.variable_delay
-	generic map
-	(
-		line_width => 5,
-		line_length => 4
-	)
-	port map
-	(
-		clk => clk,
-		ena => '1',
-		rst => rst,
-		input => ref_pixel,
-		output => ref_pixel_out
-	);
-	
-	DL_fin_addr : Entity work.variable_delay_bit
-	generic map
-	(
-		line_length => 4
-	)
-	port map
-	(
-		clk => clk,
-		ena => '1',
-		rst => rst,
-		input => fin_addr,
-		output => fin_addr_out
+		en_passthru => en_out,
+		fin_addr_passthru => fin_addr_out,
+		cap_pixel_passthru => cap_pixel_out,
+		ref_pixel_passthru => ref_pixel_out,
+		dif_pixel => dif_pixel_out,
+		threshold => threshold_out,
+		total => total_out
 	);
 	
 	MS1 : Entity work.memory_system
