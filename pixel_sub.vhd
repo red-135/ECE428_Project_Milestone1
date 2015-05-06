@@ -17,6 +17,8 @@ entity pixel_sub is
 		cap_pixel : in std_logic_vector(4 downto 0);
 		ref_pixel : in std_logic_vector(4 downto 0);
 		
+		en_passthru : out std_logic;
+		
 		threshold : out std_logic_vector(2 downto 0);
 		abs_value_out : out std_logic_vector(4 downto 0);
 		accum_total : out std_logic_vector(22 downto 0)
@@ -52,6 +54,8 @@ architecture Behavioral of pixel_sub is
 	
 	signal en_delay1 : std_logic;
 	signal en_delay2 : std_logic;
+	signal en_delay3 : std_logic;
+	
 	signal one : std_logic;
 	
 	constant threshold0_value : std_logic_vector(22 downto 0) := std_logic_vector(to_unsigned(8, 23));--2000000, 23));
@@ -80,6 +84,7 @@ begin
 				
 				en_delay1 <= '0';
 				en_delay2 <= '0';
+				en_delay3 <= '0';
 				
 				threshold_in <= (others => '0');
 			else
@@ -111,6 +116,7 @@ begin
 				
 				en_delay1 <= en;
 				en_delay2 <= en_delay1;
+				en_delay3 <= en_delay2;
 			end if;
 		end if;
 	end process;
@@ -171,7 +177,8 @@ begin
 		end if;
 	end process;
 	
-	abs_value_out <= abs_value_stage4;
+	abs_value_out <= abs_value_stage3;
+	en_passthru <= en_delay3;
 	accum_total <= total;
 	threshold <= threshold_in;
 	

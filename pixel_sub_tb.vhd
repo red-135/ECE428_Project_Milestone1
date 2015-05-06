@@ -47,6 +47,7 @@ ARCHITECTURE behavior OF pixel_sub_tb IS
          fin_addr : IN  std_logic;
          cap_pixel : IN  std_logic_vector(4 downto 0);
          ref_pixel : IN  std_logic_vector(4 downto 0);
+			en_passthru : OUT std_logic;
          abs_value_out : OUT  std_logic_vector(4 downto 0);
          accum_total : OUT  std_logic_vector(22 downto 0);
 			threshold : OUT std_logic_vector(2 downto 0)
@@ -63,6 +64,7 @@ ARCHITECTURE behavior OF pixel_sub_tb IS
    signal ref_pixel : std_logic_vector(4 downto 0) := (others => '0');
 
  	--Outputs
+	signal en_passthru : std_logic;
    signal abs_value_out : std_logic_vector(4 downto 0);
    signal accum_total : std_logic_vector(22 downto 0);
 	signal threshold : std_logic_vector(2 downto 0);
@@ -80,6 +82,7 @@ BEGIN
           fin_addr => fin_addr,
           cap_pixel => cap_pixel,
           ref_pixel => ref_pixel,
+			 en_passthru => en_passthru,
           abs_value_out => abs_value_out,
           accum_total => accum_total,
 			 threshold => threshold
@@ -99,10 +102,10 @@ BEGIN
    stim_proc: process
    begin
 	
-		wait for 1/2*clk_period;
+		--wait for 1/2*clk_period;
 		
 		rst <= '1';
-		wait for 1*clk_period;
+		wait for 2*clk_period;
 		rst <= '0';
 		
 		wait for 4*clk_period;
@@ -132,7 +135,7 @@ BEGIN
 		fin_addr <='0';
 		cap_pixel <= "11111";
 		ref_pixel <= "00000";
-		wait for 2*clk_period;
+		wait for 8*clk_period;
 		
 		en<='1';
 		cap_pixel <= "00011";
@@ -159,7 +162,7 @@ BEGIN
 		fin_addr <='0';
 		cap_pixel <= "11111";
 		ref_pixel <= "00000";
-		wait for 1*clk_period;
+		wait for 8*clk_period;
 		
 		en<='0';
 		fin_addr <='0';
