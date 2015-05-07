@@ -159,7 +159,7 @@ begin
 		end if;
 	end process;
 	
-	process_stage3: process(fin_addr_stage3, accumulator_stage3, total_stage4, threshold_stage4_new, threshold_stage4)
+	process_stage3: process(fin_addr_stage3, accumulator_stage3, total_stage4, threshold_stage4_new, threshold_stage4, en_stage3)
 	begin
 		if (accumulator_stage3 >= threshold0_value) then
 			threshold_stage4_new(0) <= '1';

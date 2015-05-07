@@ -5,6 +5,9 @@ library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
 use IEEE.NUMERIC_STD.ALL;
 
+library UNISIM;
+use UNISIM.VComponents.all;
+
 -- Uncomment the following library declaration if using
 -- arithmetic functions with Signed or Unsigned values
 --use IEEE.NUMERIC_STD.ALL;
@@ -28,45 +31,43 @@ end memory_system;
 architecture Behavioral of memory_system is
 	signal addr_1b,addr_2b : std_logic_vector(17 downto 0);
 	signal Vde, en_ram1,en_ram2 : std_logic ;
-
------------------------------------------------------------------------
--- Verilog Module Instantiation
------------------------------------------------------------------------
-
-	component addrgen_1_b
-		port ( clk    : in std_logic ;  
-		addr_1b : out std_logic_vector(17 downto 0) ; 
-		en_ram1 : out std_logic ; 
-		Reset_Main : in std_logic ;
-		VtcVde : in std_logic );
-
-	end component;
-	
-	component addrgen_2_b
-		port ( clk    : in std_logic ;  
-		addr_2b : out std_logic_vector(17 downto 0) ; 
-		en_ram2 : out std_logic ; 
-		Reset_Main : in std_logic ;
-		VtcVde : in std_logic );
-
-	end component;
-------------------------------------------------------------------------
+	signal fin_addr_pre : std_logic;
 
 begin
 
 	video_en <= Vde;
 
-	addr_comparator: process(addr_1b)
-		begin
-		-- if(addr_1b = std_logic_vector(to_unsigned(153599, addr_1b'length))) then
-		if(addr_1b = std_logic_vector(to_unsigned(31, addr_1b'length))) then
-			fin_addr <= '1';
-		else
+	addr_comparator: process(clk, Reset_Main, addr_1b)
+	begin
+		if (Reset_Main = '1') then
+			fin_addr_pre <= '0';
 			fin_addr <= '0';
+		else
+			-- if(addr_1b = std_logic_vector(to_unsigned(153599, addr_1b'length))) then
+			if(addr_1b = std_logic_vector(to_unsigned(31, addr_1b'length))) then
+				fin_addr_pre <= '1';
+			else
+				fin_addr_pre <= '0';
+			end if;
+			
+			if (rising_edge(clk)) then
+				fin_addr <= fin_addr_pre;
+			end if;
 		end if;
 	end process;
+	
+	FDCE_inst1 : FDCE
+	generic map (
+		INIT => '0') -- Initial value of register ('0' or '1')
+	port map (
+		Q => fin_addr, -- Data output
+		C => clk, -- Clock input
+		CE => '1', -- Clock enable input
+		CLR => Reset_Main, -- Asynchronous clear input
+		D => fin_addr_pre -- Data input
+	);
 
-	Inst_addr_1b : addrgen_1_b
+	Inst_addr_1b : Entity work.addrgen_1_b
 	port map (
 		clk    => clk ,
 		addr_1b => addr_1b ,
@@ -75,7 +76,7 @@ begin
 		VtcVde => Vde
 	);
 
-	Inst_addr_2b : addrgen_2_b
+	Inst_addr_2b : Entity work.addrgen_2_b
 	port map (
 		clk    => clk ,
 		addr_2b => addr_2b ,
