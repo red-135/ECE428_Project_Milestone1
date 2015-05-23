@@ -1,21 +1,9 @@
-
---
-----------------------------------------------------------------------------------
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
 use IEEE.NUMERIC_STD.ALL;
 
 library UNISIM;
 use UNISIM.VComponents.all;
-
--- Uncomment the following library declaration if using
--- arithmetic functions with Signed or Unsigned values
---use IEEE.NUMERIC_STD.ALL;
-
--- Uncomment the following library declaration if instantiating
--- any Xilinx primitives in this code.
---library UNISIM;
---use UNISIM.VComponents.all;
 
 entity memory_system is
 	port (
@@ -43,8 +31,10 @@ begin
 			fin_addr_pre <= '0';
 			fin_addr <= '0';
 		else
-			-- if(addr_1b = std_logic_vector(to_unsigned(153599, addr_1b'length))) then
-			if(addr_1b = std_logic_vector(to_unsigned(31, addr_1b'length))) then
+			--USE DURING TESTING
+			--if(addr_1b = std_logic_vector(to_unsigned(31, addr_1b'length))) then
+			
+			if(addr_1b = std_logic_vector(to_unsigned(153599, addr_1b'length))) then
 				fin_addr_pre <= '1';
 			else
 				fin_addr_pre <= '0';
@@ -55,17 +45,6 @@ begin
 			end if;
 		end if;
 	end process;
-	
-	FDCE_inst1 : FDCE
-	generic map (
-		INIT => '0') -- Initial value of register ('0' or '1')
-	port map (
-		Q => fin_addr, -- Data output
-		C => clk, -- Clock input
-		CE => '1', -- Clock enable input
-		CLR => Reset_Main, -- Asynchronous clear input
-		D => fin_addr_pre -- Data input
-	);
 
 	Inst_addr_1b : Entity work.addrgen_1_b
 	port map (

@@ -41,48 +41,48 @@ ARCHITECTURE behavior OF Top_module_tb IS
  
     COMPONENT Top_module
     PORT(
-         clk : IN  std_logic;
-         rst : IN  std_logic;
-		 en_out : OUT std_logic;
-         fin_addr_out : OUT  std_logic;
-         cap_pixel_out : OUT  std_logic_vector(4 downto 0);
-         ref_pixel_out : OUT  std_logic_vector(4 downto 0);
-         dif_pixel_out : OUT  std_logic_vector(4 downto 0);
+			clk : IN  std_logic;
+			rst : IN  std_logic;
+			en_out : OUT std_logic;
+			fin_addr_out : OUT  std_logic;
+			cap_pixel_out : OUT  std_logic_vector(4 downto 0);
+			ref_pixel_out : OUT  std_logic_vector(4 downto 0);
+			dif_pixel_out : OUT  std_logic_vector(4 downto 0);
 			total_out : OUT std_logic_vector(22 downto 0);
 			threshold_out : OUT std_logic_vector(2 downto 0)
         );
     END COMPONENT;
     
 
-   --Inputs
-   signal clk : std_logic := '0';
-   signal rst : std_logic := '1';
+	--Inputs
+	signal clk : std_logic := '0';
+	signal rst : std_logic := '1';
 
  	--Outputs
 	signal en_out : std_logic;
-   signal fin_addr_out : std_logic;
-   signal cap_pixel_out : std_logic_vector(4 downto 0);
-   signal ref_pixel_out : std_logic_vector(4 downto 0);
-   signal dif_pixel_out : std_logic_vector(4 downto 0);
+	signal fin_addr_out : std_logic;
+	signal cap_pixel_out : std_logic_vector(4 downto 0);
+	signal ref_pixel_out : std_logic_vector(4 downto 0);
+	signal dif_pixel_out : std_logic_vector(4 downto 0);
 	signal total_out : std_logic_vector(22 downto 0);
 	signal threshold_out : std_logic_vector(2 downto 0);
 
-   -- Clock period definitions
-   constant clk_period : time := 10 ns;
+	-- Clock period definitions
+	constant clk_period : time := 10 ns;
  
 BEGIN
  
 	-- Instantiate the Unit Under Test (UUT)
    uut: Top_module PORT MAP (
-          clk => clk,
-          rst => rst,
-		  en_out => en_out,
-          fin_addr_out => fin_addr_out,
-          cap_pixel_out => cap_pixel_out,
-          ref_pixel_out => ref_pixel_out,
-          dif_pixel_out => dif_pixel_out,
-			 total_out => total_out,
-			 threshold_out => threshold_out
+			clk => clk,
+			rst => rst,
+			en_out => en_out,
+			fin_addr_out => fin_addr_out,
+			cap_pixel_out => cap_pixel_out,
+			ref_pixel_out => ref_pixel_out,
+			dif_pixel_out => dif_pixel_out,
+			total_out => total_out,
+			threshold_out => threshold_out
         );
 
    -- Clock process definitions
@@ -98,11 +98,11 @@ BEGIN
    -- Stimulus process
    stim_proc: process
    begin		
-      rst <= '1';
-      wait for 2*clk_period;	
+		rst <= '1';
+		wait for 2*clk_period;	
 		rst <= '0';
 
-      wait;
+		wait;
    end process;
 
 END;

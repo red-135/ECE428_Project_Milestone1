@@ -12,7 +12,8 @@ use UNISIM.VComponents.all;
 entity memory_subsystem is
 	port (
 
-		Reset    : in std_logic ;          -- resets the counter used for data input 
+		Reset    : in std_logic ;
+		-- resets the counter used for data input 
 		-- and resets the write address generation mechanism
 
 		-- PClk is the clock for read operation		
@@ -30,12 +31,13 @@ entity memory_subsystem is
 			
 		-- READ enable ports for RAM1 and RAM2
 			
-		en_1         : in std_logic ;                     -- Read Enable RAM1
-		en_2         : in std_logic ;							 -- Read Enable RAM2
+		en_1         : in std_logic ;   -- Read Enable RAM1
+		en_2         : in std_logic ;	-- Read Enable RAM2
 
 		-- VtcVde (Video transmitter control video data enable)
-
-		VtcVde       : out std_logic     -- Goes to 1 after one clock cycle when Reset is pulled to zero
+		-- Goes to 1 after 1 clock cycle when Reset is pulled to zero
+		
+		VtcVde       : out std_logic   
 	);
 		
 end memory_subsystem;
@@ -45,6 +47,7 @@ architecture Behavioral of memory_subsystem is
 	signal addr_1_a , addr_2_a : std_logic_vector(17 downto 0);
 	signal PClk_in, PClk_180_in : std_logic ;
 	signal not_Reset : std_logic;
+	signal VtcVde_inter : std_logic;
 begin
 
 	RAM_1 : Entity work.Ram_out_1
@@ -80,7 +83,7 @@ begin
 	-- Xilinx HDL Libraries Guide, version 14.1
 	--------------------------------------------------------------------
 
-	FDCE_inst : FDCE
+	FDCE_inst1 : FDCE
 	generic map (
 		INIT => '0') -- Initial value of register ('0' or '1')
 	port map (

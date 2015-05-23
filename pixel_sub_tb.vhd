@@ -84,19 +84,19 @@ BEGIN
  
 	-- Instantiate the Unit Under Test (UUT)
    uut: pixel_sub PORT MAP (
-          clk => clk,
-          rst => rst,
-          en => en,
-          fin_addr => fin_addr,
-          cap_pixel => cap_pixel,
-          ref_pixel => ref_pixel,
-			 en_passthru => en_passthru,
-			 fin_addr_passthru => fin_addr_passthru,
-			 cap_pixel_passthru => cap_pixel_passthru,
-			 ref_pixel_passthru => ref_pixel_passthru,
-          dif_pixel => dif_pixel,
-		  threshold => threshold,
-          total => total
+			clk => clk,
+			rst => rst,
+			en => en,
+			fin_addr => fin_addr,
+			cap_pixel => cap_pixel,
+			ref_pixel => ref_pixel,
+			en_passthru => en_passthru,
+			fin_addr_passthru => fin_addr_passthru,
+			cap_pixel_passthru => cap_pixel_passthru,
+			ref_pixel_passthru => ref_pixel_passthru,
+			dif_pixel => dif_pixel,
+			threshold => threshold,
+			total => total
         );
 
    -- Clock process definitions

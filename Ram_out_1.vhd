@@ -16,8 +16,8 @@ entity Ram_out_1 is
 		data_out_1  : out std_logic_vector(4 downto 0);
 		data_in_1   : out std_logic_vector(4 downto 0);
 		adr_1_a     : out std_logic_vector(17 downto 0);
-		enb         : in std_logic ;                       -- enable for read port
-		adr_1_b     : in std_logic_vector(17 downto 0)    -- read address 
+		enb         : in std_logic ;
+		adr_1_b     : in std_logic_vector(17 downto 0)
 	);
 end Ram_out_1;
 

@@ -57,9 +57,20 @@ architecture Behavioral of pixel_sub is
 	signal en_stage2 : std_logic;
 	signal en_stage3 : std_logic;
 	
-	constant threshold0_value : std_logic_vector(22 downto 0) := std_logic_vector(to_unsigned(2000000, 23));
-	constant threshold1_value : std_logic_vector(22 downto 0) := std_logic_vector(to_unsigned(1000000, 23));
-	constant threshold2_value : std_logic_vector(22 downto 0) := std_logic_vector(to_unsigned(100000, 23));
+	--USE DURING TESTING
+	--constant threshold0_value : std_logic_vector(22 downto 0) := 
+	--	std_logic_vector(to_unsigned(8, 23));
+	--constant threshold1_value : std_logic_vector(22 downto 0) := 
+	--	std_logic_vector(to_unsigned(16, 23));
+	--constant threshold2_value : std_logic_vector(22 downto 0) := 
+	--	std_logic_vector(to_unsigned(32, 23));
+	
+	constant threshold0_value : std_logic_vector(22 downto 0) := 
+		std_logic_vector(to_unsigned(2000000, 23));
+	constant threshold1_value : std_logic_vector(22 downto 0) := 
+		std_logic_vector(to_unsigned(1000000, 23));
+	constant threshold2_value : std_logic_vector(22 downto 0) := 
+		std_logic_vector(to_unsigned(100000, 23));
 begin
 	
 	en_passthru <= en_stage3;
@@ -132,10 +143,13 @@ begin
 		end if;
 	end process;
 	
-	process_stage1: process(cap_pixel_stage1, ref_pixel_stage1, cap_minus_ref, ref_minus_cap)
+	process_stage1: 
+	process(cap_pixel_stage1, ref_pixel_stage1, cap_minus_ref, ref_minus_cap)
 	begin
-		cap_minus_ref <= std_logic_vector(signed('0'&cap_pixel_stage1) - signed('0'&ref_pixel_stage1));
-		ref_minus_cap <= std_logic_vector(signed('0'&ref_pixel_stage1) - signed('0'&cap_pixel_stage1));
+		cap_minus_ref <= std_logic_vector(
+			signed('0'&cap_pixel_stage1) - signed('0'&ref_pixel_stage1));
+		ref_minus_cap <= std_logic_vector(
+			signed('0'&ref_pixel_stage1) - signed('0'&cap_pixel_stage1));
 		
 		if(cap_minus_ref(5) = '0') then
 			dif_pixel_stage2_temp <= cap_minus_ref(4 downto 0);
@@ -144,7 +158,8 @@ begin
 		end if;
 	end process;
 	
-	process_stage2: process(dif_pixel_stage2, accumulator_stage3, fin_addr_stage3, en_stage2)
+	process_stage2: 
+	process(dif_pixel_stage2, accumulator_stage3, fin_addr_stage3, en_stage2)
 	begin
 		
 		if(fin_addr_stage3 = '1') then
@@ -155,11 +170,14 @@ begin
 				accumulator_stage3_temp <= (others => '0');
 			end if;	
 		else
-			accumulator_stage3_temp <= std_logic_vector(unsigned(accumulator_stage3) + unsigned(dif_pixel_stage2));
+			accumulator_stage3_temp <= std_logic_vector(
+				unsigned(accumulator_stage3) + unsigned(dif_pixel_stage2));
 		end if;
 	end process;
 	
-	process_stage3: process(fin_addr_stage3, accumulator_stage3, total_stage4, threshold_stage4_new, threshold_stage4, en_stage3)
+	process_stage3: 
+	process(fin_addr_stage3, accumulator_stage3, total_stage4, 
+			threshold_stage4_new, threshold_stage4, en_stage3)
 	begin
 		if (accumulator_stage3 >= threshold0_value) then
 			threshold_stage4_new(0) <= '1';
